@@ -1,0 +1,94 @@
+<!doctype html>
+<title>Me.</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<div class=page>
+    <h1><a href='{{url_for('show_entries')}}'>Me.</a></h1>
+  <div class=metanav>
+  
+  {% if not session.logged_in %}
+  {% if request.path == '/' %}
+      {% if request.args.get('ss')!="true" %}
+        <a href="{{ url_for('show_entries',ss='true', p=request.args.get('p'), s=request.args.get('s')) }}">搜索</a> | 
+      {% else %}
+        <a href="{{ url_for('show_entries',ss='false', p=request.args.get('p'), s=request.args.get('s')) }}">搜索</a> | 
+      {% endif %}
+  {% elif request.path == '/usermanage' %}
+      {% if request.args.get('ss')!="true" %}
+        <a href="{{ url_for('user_manage',ss='true', p=request.args.get('p'), s=request.args.get('s')) }}">搜索</a> | 
+      {% else %}
+        <a href="{{ url_for('user_manage',ss='false', p=request.args.get('p'), s=request.args.get('s')) }}">搜索</a> | 
+      {% endif %}
+  {% endif%}
+  <a href="{{ url_for('show_entries') }}">主页</a> |
+  <a href="{{ url_for('login') }}">登录</a> 
+  {% else %}
+    {{session.username}} | 
+    {% if request.path == '/' %}
+        {% if request.args.get('ss')!="true" %}
+        <a href="{{ url_for('show_entries',ss='true', p=request.args.get('p'), s=request.args.get('s')) }}">搜索</a> | 
+        {% else %}
+        <a href="{{ url_for('show_entries',ss='false', p=request.args.get('p'), s=request.args.get('s')) }}">搜索</a> | 
+        {% endif %}
+    {% elif request.path == '/usermanage' %}
+        {% if request.args.get('ss')!="true" %}
+        <a href="{{ url_for('user_manage',ss='true', p=request.args.get('p'), s=request.args.get('s')) }}">搜索</a> | 
+        {% else %}
+        <a href="{{ url_for('user_manage',ss='false', p=request.args.get('p'), s=request.args.get('s')) }}">搜索</a> | 
+       {% endif %}
+    {% endif%}
+    <a href="{{ url_for('show_entries') }}">主页</a>
+    | <a href="{{ url_for('add_page') }}">添加</a>
+    {% if session.username == "admin" %}
+        | <a href="{{url_for('user_manage')}}">用户管理</a>
+    {% endif %}
+    | <a href="{{ url_for('logout') }}">退出</a>
+  {% endif %}
+  </div>
+
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+
+  {% if request.args.get('ss')=='true' %}
+  <div align="right"><p>
+   {% if request.path == '/' %}
+    <form action="{{url_for('show_entries')}}" method="get">
+   {% elif request.path == '/usermanage' %}
+    <form action="{{url_for('user_manage')}}" method="get">
+   {% endif%}
+          <input type=text name=s >
+          <input type=submit name=submit value="搜索">
+      </form>
+      </p></div>
+  {% endif%}
+ 
+  {% block body %}{% endblock %}
+ 
+    <div class=pagenav>
+      {% if pages %}
+      {% for i in range(0, pages) %}
+      {% if (i+1) <= 1+2 or (i+1)>=pages-2 or ((i+1) >= (now-2)) and ((i+1)<=(now+2))%}
+      <a href="{{ url_for(fun, p=i+1, s=request.args.get('s')) }}">
+          {% if (i+1)==now %}
+            <font color=red><b>
+          {% endif %}
+          {{i+1}}
+          {% if (i+1)==now %}
+            </font></b>
+          {% endif %}
+      </a>
+      {% endif %}
+      {% if (now >= 7) and (i+1)==4%}
+      ...
+      {% endif %}
+      {% if (pages > 10) and (now <= pages-7) and (i+1)==(pages-3) %}
+      ...
+      {% endif %}
+      {% endfor %}
+
+      {% endif %}
+  </div> 
+
+  {% block send %}{% endblock %}
+</div>
+
