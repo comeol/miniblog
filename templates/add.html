@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block body %}
+<h2>添加</h2>
+{% if session.logged_in %}
+    <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
+        <table>
+            <tr><td><b>标题:</b></td>
+            <td><input type=text size=51 name=title></td>
+            </tr>
+            <tr><td valign="top"><b>内容:</b></td>
+                <td><textarea name=text rows=15 cols=50></textarea></td>
+            </tr>
+            <tr><td></td><td><input type=submit value="提交"></td></tr>
+        </table>
+    </form>
+{% endif %}
+{% endblock %}
