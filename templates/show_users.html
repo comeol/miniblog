@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block body %}
+  
+{% if session.username == 'admin' %}
+<table width="100%" border=0 class=entries cellspacing="1" cellpadding="5">
+    <tr bgcolor="#eeeeee" height="25">
+        <td align=center colspan=3><b>用户管理</b></td>
+    </tr>
+    <tr bgcolor="#eeeeee" height="25">
+        <td>ID</td>
+        <td>用户名</td>
+        <td>操作</td>
+    </tr>
+  {% for user in users %}
+  <tr height="25" bgcolor="#eeeeee" >
+      <td>{{ user.id }}</td>
+      <td class="title">{{ user.name }}</td>
+      <td class='op'>
+          <a href="{{ url_for('moduser', id=user.id) }}">修改</a> | 
+          {% if user.name != 'admin' %}
+          <a href="{{ url_for('del_user', id=user.id) }}">删除</a>
+          {% else %}
+          -
+          {% endif %}
+      </td>
+   </tr>
+  {% endfor %}
+  <tr  height="25" bgcolor="#eeeeee" ><td colspan=3 align="right" class="op"><a href="{{ url_for('user')}}">添加用户</a></td></tr>
+  </table>
+{% endif %}
+{% endblock %}
+
