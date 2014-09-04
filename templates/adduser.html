@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block body %}
+<h2>添加用户</h2>
+    <form action="{{ url_for('add_user') }}" method="post" class=add-entry>
+        <table> 
+            <tr><td><b>用户名:</b></td>
+                <td><input type=text size=30 name="name"></td>
+            </tr>
+            <tr><td><b>密码:</b></td>
+                <td><input type=text size=30 name="password"></td>
+            </tr>
+            <tr><td></td><td><input type=submit value="添加"></td></tr>
+      </table>
+    </form>
+{% endblock %}
+
