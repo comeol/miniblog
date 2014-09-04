@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block body %}
+  
+<table width="100%" border=0 class=entries cellspacing="0" cellpadding="5">
+   
+  {% for entry in entries %}
+      <tr bgcolor="#eeeeee" height="25">
+          <td width="50%" class="title">
+              <a href="{{url_for('page',id=entry.id)}}"><font class="title">{{ entry.title }}</font></a>
+          </td>
+          <td align="right" class='op'>
+              {% if session.username == 'admin' %}
+               <a href="{{ url_for('mod', id=entry.id) }}">修改</a> |
+              {% endif %}
+              {% if session.username == entry.name  or session.username == 'admin' %}
+             
+              <a href="{{ url_for('delete', id=entry.id) }}">删除</a> |
+              {% endif %}
+              {{ entry.name }} |
+              {{ entry.date }}
+          </td>
+      </tr>
+      <tr height="25"><td colspan="2" class="text" >{{ entry.text|safe }}</td></tr>
+  {% else %}
+  <!--tr bgcolor="#eeeeee" height="25"><td>没有文章.</td></tr-->
+  {% endfor %}
+  </table>
+{% endblock %}
+
+{% block send %}
+    {% if session.logged_in %}
+    <hr>
+    <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
+        <table>
+            <tr><td><b>标题:</b></td>
+                <td><input type=text size=43 name=title></td>
+                <td><input type=submit value="提交"></td>
+            </tr>
+            <tr><td valign="top"><b>内容:</b></td>
+                <td colspan="2"><textarea name=text rows=5 cols=50></textarea></td>
+            </tr>
+        </table>
+    </form>
+    {% endif %}
+{% endblock %}
