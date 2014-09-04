@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block body %}
+<h2>修改</h2>
+{% if session.username == 'admin' %}
+    <form action="{{ url_for('modpage') }}" method=post class=add-entry>
+        <table>
+            <tr><td><b>ID:</b></td>
+                <td><input type=text size=51 name=id value="{{ row['id'] }}" readonly ></td>
+            </tr>
+            <tr><td><b>用户名:</b></td>
+                <td><input type=text size=51 name=username value="{{ row['name'] }}"></td>
+            </tr>
+            <tr><td><b>标题:</b></td>
+            <td><input type=text size=51 name=title value="{{ row['title'] }}"></td>
+            </tr>
+            <tr><td valign="top"><b>内容:</b></td>
+                <td><textarea name=text rows=15 cols=50>{{ row['text'] }}</textarea></td>
+            </tr>
+            <tr><td><b>时间:</b></td>
+                <td><input type=text size=51 name=date value="{{ row['date'] }}"></td>
+            </tr>
+            <tr><td></td><td><input type=submit value="提交"></td></tr>
+        </table>
+    </form>
+{% endif %}
+{% endblock %}
